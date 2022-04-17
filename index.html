@@ -25,7 +25,7 @@
                 })
             }
         }
-        function checkLoginStatus() {
+        async function checkLoginStatus() {
             window.loginBtn = document.querySelector("#loginBtn")
             const nameTxt = document.querySelector("#name")
             if (gauth.isSignedIn.get()) {
@@ -38,7 +38,11 @@
 
                 const fields = "items(id,snippet(title,description,thumbnails(medium(url))),statistics(viewCount,videoCount,subscriberCount),contentDetails(relatedPlaylists(uploads)))"
                 const endPoint = `https://www.googleapis.com/youtube/v3/channels?access_token=${access_token}&id=UCvc8kv-i5fvFTJBFAk6n1SA&fields=${fields}&part=snippet,statistics,contentDetails`
-                fetch(endPoint).then(res => res.json()).then(data => console.log(data))
+                const data = await fetch(endPoint).then(res => res.json())
+                console.log(data)
+                const { snippet: { title, description, thumbnails: { medium: { url } } }, statistics: { videoCount, subscriberCount, viewCount }, contentDetails: { relatedPlaylists: { uploads } } } = data.items[0]
+                const channelInfo = document.querySelector('.channel_info')
+                channelInfo.innerHTML = `${title} : ${description}`
 
             } else {
                 console.log("logouted")
@@ -76,6 +80,7 @@
     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel ea magnam eligendi, asperiores perspiciatis neque
         culpa, totam doloremque consequatur voluptates quidem praesentium iste nulla unde repellat expedita amet impedit
         corrupti.</p>
+    <span class="channel_info"></span>
     <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 </body>
 
