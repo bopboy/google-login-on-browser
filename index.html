@@ -14,20 +14,20 @@
             console.log('init')
             gapi.load('auth2', function () {
                 console.log('auth2')
+                var gauth = gapi.auth2.init({
+                    client_id: '1024333840743-26tg96stp28mm745ljalhd7j5202tltd.apps.googleusercontent.com'
+                })
+                gauth.then(function () {
+                    console.log('GoogleAuth Success')
+                }, function () {
+                    console.log('GoogleAuth Failure')
+                })
             })
-        }
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
         }
     </script>
 </head>
 
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <h1><a href="index.html">HOME</a></h1>
     <ol>
         <li><a href="#">HTML</a></li>
