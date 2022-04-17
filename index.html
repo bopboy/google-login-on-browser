@@ -12,7 +12,9 @@
     <script>
         function checkLogin() {
             if (loginBtn.value === 'Login') {
-                gauth.signIn().then(function () {
+                gauth.signIn(
+                    { scpoe: 'https://www.googleapis.com/auth/calendar' }
+                ).then(function () {
                     console.log('gauth.signIn()')
                     checkLoginStatus() // then 처리니까 then 안에 넣어주어야 한다.
                 })
@@ -25,12 +27,16 @@
         }
         function checkLoginStatus() {
             window.loginBtn = document.querySelector("#loginBtn")
+            const nameTxt = document.querySelector("#name")
             if (gauth.isSignedIn.get()) {
                 console.log("logined")
                 loginBtn.value = "Logout"
+                const profile = gauth.currentUser.get().getBasicProfile()
+                nameTxt.innerHTML = `Welcom <strong>${profile.getName()}</strong>님 `
             } else {
                 console.log("logouted")
                 loginBtn.value = "Login"
+                nameTxt.innerHTML = ''
             }
         }
         function init() {
@@ -52,7 +58,7 @@
 </head>
 
 <body>
-    <input type="button" id="loginBtn" value="checking..." onclick="checkLogin()">
+    <span id="name"></span><input type="button" id="loginBtn" value="checking..." onclick="checkLogin()">
     <h1><a href="index.html">HOME</a></h1>
     <ol>
         <li><a href="#">HTML</a></li>
