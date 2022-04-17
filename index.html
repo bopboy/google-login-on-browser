@@ -10,6 +10,12 @@
         content="1024333840743-26tg96stp28mm745ljalhd7j5202tltd.apps.googleusercontent.com">
     <title>Google OAuth</title>
     <script>
+        function init() {
+            console.log('init')
+            gapi.load('auth2', function () {
+                console.log('auth2')
+            })
+        }
         function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -32,6 +38,7 @@
     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel ea magnam eligendi, asperiores perspiciatis neque
         culpa, totam doloremque consequatur voluptates quidem praesentium iste nulla unde repellat expedita amet impedit
         corrupti.</p>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 </body>
 
 </html>
