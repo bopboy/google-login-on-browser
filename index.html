@@ -13,7 +13,7 @@
         function checkLogin() {
             if (loginBtn.value === 'Login') {
                 gauth.signIn(
-                    { scpoe: 'https://www.googleapis.com/auth/calendar' }
+                    { scope: 'https://www.googleapis.com/auth/youtube' }
                 ).then(function () {
                     console.log('gauth.signIn()')
                     checkLoginStatus() // then 처리니까 then 안에 넣어주어야 한다.
@@ -32,7 +32,14 @@
                 console.log("logined")
                 loginBtn.value = "Logout"
                 const profile = gauth.currentUser.get().getBasicProfile()
+                const { access_token } = gauth.currentUser.get().getAuthResponse(true)
+                console.log(access_token)
                 nameTxt.innerHTML = `Welcom <strong>${profile.getName()}</strong>님 `
+
+                const fields = "items(id,snippet(title,description,thumbnails(medium(url))),statistics(viewCount,videoCount,subscriberCount),contentDetails(relatedPlaylists(uploads)))"
+                const endPoint = `https://www.googleapis.com/youtube/v3/channels?access_token=${access_token}&id=UCvc8kv-i5fvFTJBFAk6n1SA&fields=${fields}&part=snippet,statistics,contentDetails`
+                fetch(endPoint).then(res => res.json()).then(data => console.log(data))
+
             } else {
                 console.log("logouted")
                 loginBtn.value = "Login"
