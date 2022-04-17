@@ -10,15 +10,39 @@
         content="1024333840743-26tg96stp28mm745ljalhd7j5202tltd.apps.googleusercontent.com">
     <title>Google OAuth</title>
     <script>
+        function checkLogin() {
+            if (loginBtn.value === 'Login') {
+                gauth.signIn().then(function () {
+                    console.log('gauth.signIn()')
+                    checkLoginStatus() // then 처리니까 then 안에 넣어주어야 한다.
+                })
+            } else {
+                gauth.signOut().then(function () {
+                    console.log('gauth.signOut()')
+                    checkLoginStatus()
+                })
+            }
+        }
+        function checkLoginStatus() {
+            window.loginBtn = document.querySelector("#loginBtn")
+            if (gauth.isSignedIn.get()) {
+                console.log("logined")
+                loginBtn.value = "Logout"
+            } else {
+                console.log("logouted")
+                loginBtn.value = "Login"
+            }
+        }
         function init() {
             console.log('init')
             gapi.load('auth2', function () {
                 console.log('auth2')
-                var gauth = gapi.auth2.init({
+                window.gauth = gapi.auth2.init({
                     client_id: '1024333840743-26tg96stp28mm745ljalhd7j5202tltd.apps.googleusercontent.com'
                 })
                 gauth.then(function () {
                     console.log('GoogleAuth Success')
+                    checkLoginStatus()
                 }, function () {
                     console.log('GoogleAuth Failure')
                 })
@@ -28,6 +52,7 @@
 </head>
 
 <body>
+    <input type="button" id="loginBtn" value="checking..." onclick="checkLogin()">
     <h1><a href="index.html">HOME</a></h1>
     <ol>
         <li><a href="#">HTML</a></li>
